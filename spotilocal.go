@@ -23,11 +23,11 @@ type Spotilocal struct {
 }
 
 //generates a random string as subdomain
-func getSubDomaiin() string {
-	const chars = "abcdefghijklmnopqrstuvwxyz"
+func getSubDomain(str_len int) string {
+	const chars = "abcdefghijklmnopqrstuvwxyz123456789"
 	rand.Seed(time.Now().UTC().UnixNano())
-	result := make([]byte, RANDOM_STRING_LEN);
-	for i := 0; i < RANDOM_STRING_LEN; i++ {
+	result := make([]byte, str_len);
+	for i := 0; i < str_len; i++ {
 		result[i] = chars[rand.Intn(len(chars))]
 	}
 	return string(result) + LOCAL_URL_PREFIX;
@@ -35,7 +35,7 @@ func getSubDomaiin() string {
 
 // Detect connectable ports by trying port ranges 4370 to 4380
 func Connect () {
-	randomString := getSubDomaiin()
+	randomString := getSubDomain(RANDOM_STRING_LEN)
 	log.Debug("Connecting to " + randomString)
 	decodedToken := GetToken()
 	log.Debug(decodedToken.T)
