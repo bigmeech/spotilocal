@@ -20,7 +20,7 @@ type Spotilocal struct {
 	Port string
 }
 
-//generates a random string as
+//generates a random string as subdomain
 func getSubDomaiin() string {
 	const chars = "abcdefghijklmnopqrstuvwxyz"
 	rand.Seed(time.Now().UTC().UnixNano())
