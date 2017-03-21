@@ -10,7 +10,6 @@ import (
 )
 
 const ORIGIN_URL string = "https://open.spotify.com"
-const LOCAL_URL string = "https://open.spotify.com"
 const DEFAULT_PORT int = 4370
 const MIN_PORT int = DEFAULT_PORT
 const MAX_PORT int = 4380;
