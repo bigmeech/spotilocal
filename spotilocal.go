@@ -48,7 +48,7 @@ func Connect () Spotilocal {
 	randomString := getSubDomain(RANDOM_STRING_LEN)
 	log.Debug("Connecting to " + randomString)
 
-	//TYPES ASSERTIONS YO!!!!!!! FROM SUMTING TO ANYTING BACK TO SOMETHING.
+	//How do i get this to work properly
 	decodedToken := getJSON(ORIGIN_URL + TOKEN_PATH, token)["t"]
 	decodedCSRFToken := getJSON(ORIGIN_URL + CSRF_TOKEN_PATH, csrf_token)["token"]
 
