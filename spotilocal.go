@@ -25,13 +25,13 @@ var log = logger.MustGetLogger("Spotilocal")
 type Spotilocal struct {
 	Host string
 	Port string
-	T Token
-	CToken CSRFToken
+	token string
+	csrf_token string
 }
 
 //generates a random string as subdomain
 func getSubDomain(str_len int) string {
-	const chars = "abcdefghijklmnopqrstuvwxyz123456789"
+	const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRZTUVWZYZ"
 	rand.Seed(time.Now().UTC().UnixNano())
 	result := make([]byte, str_len);
 	for i := 0; i < str_len; i++ {
@@ -49,16 +49,18 @@ func Connect () Spotilocal {
 	log.Debug("Connecting to " + randomString)
 
 	//TYPES ASSERTIONS YO!!!!!!! FROM SUMTING TO ANYTING BACK TO SOMETHING.
-	decodedToken := getJSON(ORIGIN_URL + TOKEN_PATH, token).(Token)
-	decodedCSRFToken := getJSON(ORIGIN_URL + CSRF_TOKEN_PATH, csrf_token).(CSRFToken);
+	decodedToken := getJSON(ORIGIN_URL + TOKEN_PATH, token)["t"]
+	decodedCSRFToken := getJSON(ORIGIN_URL + CSRF_TOKEN_PATH, csrf_token)["token"]
 
-	log.Debug(decodedToken)
+	log.Debug(decodedToken.(string))
+	log.Debug(decodedCSRFToken.(string))
 
-	return Spotilocal{ T: decodedToken, CToken: decodedCSRFToken }
+	return Spotilocal{ token: decodedToken.(string), csrf_token: decodedCSRFToken.(string) }
 }
 
 // Gets token from remote
-func getJSON (url string, target interface{}) interface{} {
+func getJSON (url string, target interface{}) map[string]interface{} {
+	log.Info("Getting " + url);
 	response, resp_err := http.Get(url)
 
 	if resp_err != nil {
@@ -76,7 +78,10 @@ func getJSON (url string, target interface{}) interface{} {
 	if decode_error != nil {
 		panic(decode_error.Error())
 	}
-	return target
+
+	// pretend you dont know what type the struct is to make it more function more generic
+	// and just cast the return value to a map[string]interface{} type
+	return target.(map[string]interface{})
 }
 
 
